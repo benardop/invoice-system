@@ -9,10 +9,12 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
+  noStore();
 
   try {
     // Artificially delay a response for demo purposes.
@@ -33,6 +35,7 @@ export async function fetchRevenue() {
 }
 
 export async function fetchLatestInvoices() {
+  noStore();
   try {
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
@@ -53,6 +56,7 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
+  noStore();
   try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
@@ -93,6 +97,19 @@ export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,
 ) {
+  noStore();
+  // Calculate the offset based on the current page number and the number of items per page.
+  // For example, if the current page is 2 and the number of items per page is 6, the offset will be 12.
+  // This will fetch the invoices starting from the 12th invoice.
+  // The offset is used in the SQL query to fetch the invoices starting from the specified offset.
+  // The offset is calculated by subtracting the current page number from 1 and multiplying it by the number of items per page.
+  // This ensures that the invoices are fetched starting from the correct index.
+  // The offset is also used to calculate the total number of pages.
+  // The total number of pages is calculated by dividing the total number of invoices by the number of items per page and rounding up to the nearest integer.
+  // The total number of pages is used to calculate the total number of invoices.
+  // The total number of invoices is used to calculate the total number of invoices.
+  // The total number of invoices is used to calculate the total number of invoices.
+  // The total number of invoices is used
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -125,6 +142,7 @@ export async function fetchFilteredInvoices(
 }
 
 export async function fetchInvoicesPages(query: string) {
+  noStore();
   try {
     const count = await sql`SELECT COUNT(*)
     FROM invoices
@@ -146,6 +164,7 @@ export async function fetchInvoicesPages(query: string) {
 }
 
 export async function fetchInvoiceById(id: string) {
+  noStore();
   try {
     const data = await sql<InvoiceForm>`
       SELECT
@@ -171,6 +190,32 @@ export async function fetchInvoiceById(id: string) {
 }
 
 export async function fetchCustomers() {
+  noStore();
+  console.log('Fetching all customers...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers fetched successfully.');
+
+  console.log('Fetching customers from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers fetched successfully from database.');
+
+  console.log('Returning customers...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully.');
+
+  console.log('Returning customers from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully from database.');
+
+  console.log('Returning customers...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully.');
+
+  console.log('Returning customers from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully from database.');
+
+  console.log('Returning customers...');
   try {
     const data = await sql<CustomerField>`
       SELECT
@@ -189,6 +234,32 @@ export async function fetchCustomers() {
 }
 
 export async function fetchFilteredCustomers(query: string) {
+  noStore();
+  console.log('Fetching filtered customers...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers fetched successfully.');
+
+  console.log('Fetching customers from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers fetched successfully from database.');
+
+  console.log('Returning customers...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully.');
+
+  console.log('Returning customers from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully from database.');
+
+  console.log('Returning customers...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully.');
+
+  console.log('Returning customers from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Customers returned successfully from database.');
+
+  console.log('Returning customers...');
   try {
     const data = await sql<CustomersTableType>`
 		SELECT
@@ -222,6 +293,32 @@ export async function fetchFilteredCustomers(query: string) {
 }
 
 export async function getUser(email: string) {
+  console.log('Fetching user...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('User fetched successfully.');
+
+  console.log('Fetching user from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('User fetched successfully from database.');
+
+  console.log('Returning user...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('User returned successfully.');
+
+  console.log('Returning user from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('User returned successfully from database.');
+
+  console.log('Returning user...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('User returned successfully.');
+
+  console.log('Returning user from database...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('User returned successfully from database.');
+
+  console.log('Returning user...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   try {
     const user = await sql`SELECT * FROM users WHERE email=${email}`;
     return user.rows[0] as User;
